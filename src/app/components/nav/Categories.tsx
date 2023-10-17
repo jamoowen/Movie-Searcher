@@ -21,7 +21,7 @@ const items: MenuItem[] = [
 export default function Categories() {
 
     const [open, setOpen] = useState(false)
-    const toggleOpen = () => { setOpen(true) }
+    const toggleOpen = () => { setOpen(!open) }
     const toggleClose = () => { setOpen(false) }
 
     return (
