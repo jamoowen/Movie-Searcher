@@ -2,17 +2,29 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
 export default async function Index() {
-  const cookieStore = cookies()
-  const supabase = createServerComponentClient({ cookies: () => cookieStore })
+ 
+  const supabase = createServerComponentClient({ cookies })
 
-  const { data: countries } = await supabase.from("countries").select();
+  const {data: {user}} = await supabase.auth.getUser();
+  if (user) {
+    console.log("user data in main page")
+  } else {
+    console.log('error getting session', user)
+  }
+
+  // const { data } = await supabase.from("watchlist").select();
+  // const { data: movies } = await supabase.from("movies").select();
+  // const { data: actors } = await supabase.from("actors").select();
 
   return (
-    <ul className="my-auto text-foreground">
-      {countries?.map((country) => (
-        <li key={country.id}>{country.name}</li>
-      ))}
-    </ul>
+    // <ul className="my-auto text-foreground">
+    //   {movies?.map((movie) => (
+    //     <li key={movie.id}>{movie.movieName}, {movie.movieRating}, {movie.releaseYear}
+    //     {movie.director}, {movie.starringActors}
+    //     </li>
+    //   ))}
+    // </ul>
+    <div>hello</div>
   );
 }
 

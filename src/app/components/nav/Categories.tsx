@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
+import { BiSolidCameraMovie } from "react-icons/bi"
+
 
 type MenuItem = {
     label: string;
@@ -12,7 +14,8 @@ type MenuItem = {
 const items: MenuItem[] = [
     { label: "Actors", path: "/search/actors" },
     { label: "Directors", path: "/search/directors" },
-    { label: "Genres", path: "/search/genres" },
+    // { label: "Genres", path: "/search/genres" },
+    { label: "Movies", path: "/search/movies" },
 
 ]
 
@@ -27,12 +30,12 @@ export default function Categories() {
     return (
         <>
             <div onClick={toggleOpen}
-                className="cursor-pointer flex-row items-center row-span-1 flex gap-2"
+                className="cursor-pointer flex-row items-center row-span-1 flex gap-1"
             >
-                <div>Categories</div>
-                <AiOutlineMenu />
+                <div>Find a Movie </div>
+                <BiSolidCameraMovie />
             </div>
-
+                
           
                 <div onMouseLeave={toggleClose} className="absolute bg-white items-center shadow-md w-[40vw] rounded-md left-1/3 top-12">
                     {open && (

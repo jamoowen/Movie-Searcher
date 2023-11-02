@@ -1,48 +1,101 @@
 "use client"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { Session, createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useState } from "react";
+import { validateEmail, validatePassword, confirmPassword } from "../helpers";
+import { useRouter } from 'next/navigation'
+// import { redirect } from 'next/navigation'
 
+
+// import Signup from "../components/signup/Signup";
 
 const Signin = () => {
 
+
     const supabase = createClientComponentClient();
 
-    const handleSignIn = async () => {
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: 'example@email.com', 
-            password: 'example-password',
-        })
+    const router = useRouter();
+
+
+
+    const [showPassword, setShowPassword] = useState("password");
+    const [showPasswordReset, setShowPasswordReset] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const handleShowPassword = () => {
+        if (showPassword === "password") {
+            setShowPassword("text")
+        } else {
+            setShowPassword("password")
+        }
+        return
     }
-    
-    
+
+    const handleSignin = async (event) => {
+        setLoading(true)
+        event.preventDefault();
+        const email = event.target.elements.email.value;
+        const password = event.target.elements.firstPassword.value;
+        const { data: { user }, } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+
+        });
+        if (user) {
+            console.log('logged in');
+            router.refresh();
+            // router.push('/')
+        } else {
+            console.log("error signin in")
+            window.alert("Incorrect username/password combination")
+            setLoading(false)
+        }
+    }
+
+    const handlePasswordReset = async (e) => {
+        setLoading(true)
+        e.preventDefault();
+        const resetEmail = e.target.elements.resetEmail.value;
+        await supabase.auth.resetPasswordForEmail(resetEmail, {
+            redirectTo: `${location.origin}/api/resetPassword`,
+        })
+        alert(`password reset sent to ${resetEmail}`)
+        setLoading(false)
+    }
+
+
     return (
 
-        <div className="flex flex-col items-center justify-center mx-auto mt-10 py-6 sm:w-4/12 w-8/12 rounded-md  border border-neutral-600">
-        <div className="mb-5 text-xl font-medium text-white">Sign In </div>
-        <form  onSubmit={handleSignIn} >
-        
-            <label className="block text-black">
-                <span className="block text-sm font-medium text-slate-500">Email</span>
-
-                <input type="email" name="email" placeholder="...@gmail.com" className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm text-back shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 " />
-                <span className="block text-sm font-medium text-slate-500">Password</span>
-
-                <input type="password" name="password" className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm text-back shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 " />
-                
-                <button type="submit" disabled={submitDisabled} className="bg-blue-400 disabled:bg-slate-400 rounded-md mt-5 block w-full px-3 py-2">Sign Up</button>
-              
-            </label>
 
 
+        <>
+            <div className="mb-5 text-xl font-medium text-black">Sign In </div>
+            <form onSubmit={handleSignin} >
+                <label className="block text-black">
+                    <span className="block text-sm font-medium text-slate-500">Email</span>
+                    <input type="email" autoComplete="email" name="email" placeholder="" className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm text-back shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 " />
+                    <span className="block text-sm font-medium text-slate-500">Password</span>
+                    <input type={showPassword} name="firstPassword" className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm text-back shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 " />
+
+                    <input type="checkbox" onClick={handleShowPassword} /> <span className="text-slate-500">Show password</span>
+                    <button type="submit" disabled={loading} className="bg-green-400 disabled:bg-slate-400 rounded-md mt-5 block w-full px-3 py-2">Sign In</button>
+                </label>
+            </form>
+            < div onClick={() => { setShowPasswordReset(!showPasswordReset) }} className="py-2 items-center text-black" >Forgotten pasword?</div>
+            {showPasswordReset &&
+                <div>
+                    <form onSubmit={handlePasswordReset}>
+                        <input type="email" autoComplete="email" name="resetEmail" placeholder="Enter your email" className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm text-back shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 " />
+                        <button type="submit" disabled={loading} className="bg-yellow-500 disabled:bg-slate-400 rounded-md mt-2 block w-full px-3 py-2">Reset Password</button>
+                    </form>
+                </div>
+            }
+
+        </>
 
 
 
-
-        </form>
-
-    </div>
 
     )
-}
+};
 
 export default Signin;
