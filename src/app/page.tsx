@@ -7,7 +7,7 @@ export default async function Index() {
 
   const {data: {user}} = await supabase.auth.getUser();
   if (user) {
-    console.log("user data in main page")
+
   } else {
     console.log('error getting session', user)
   }

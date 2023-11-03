@@ -4,86 +4,96 @@ import { useEffect, useState, useCallback } from "react";
 import { createClientComponentClient, Session } from "@supabase/auth-helpers-nextjs";
 import Error from "next/error";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 
 const ChangeAvatarButton = ({ session }: { session: Session | null }) => {
-    const supabase = createClientComponentClient();
+    const supabase = createClientComponentClient<Database>();
     const router = useRouter();
     const user = session?.user;
 
-    const [showForm, setShowForm] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [avatars, setAvatars] = useState('')
+
+
+    const [showForm, setShowForm] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [avatars, setAvatars] = useState<string[] | null>([])
+    const [newAvatar, setNewAvatar] = useState<string | null>(null)
     // const [newName, setNewName] = useState(null)
 
     const handleClick = () => {
-        if (!showForm) { getAvatars(); }
+
         setShowForm(!showForm)
     }
+    // 
 
+
+
+    // use callback will execute on mount (fetch the avatars)
     const getAvatars = useCallback(async () => {
-        setLoading(true);
-        try {
+      
 
-            const { data, error1, status } = await supabase.from('profiles')
-                .select('name, avatarUrl')
-                .eq('user_id', user?.id)
-                .single();
-
-
-            const { data: avatarData, error } = await supabase
+        const getAvatarUrl = async (avatarName: String) => {
+            const { data } = await supabase
                 .storage
-                .getBucket('images')
+                .from('images')
+                .getPublicUrl(`avatars/${avatarName}`)
+            return data.publicUrl;
+        }
+        try {
+            const { data, error } = await supabase
+                .storage
+                .from('images')
+                .list('avatars')
 
-
-            if (error) { throw error }
-
-            console.log(`User data: ${data}\nUrl data: ${avatarData}`)
-            if (avatarData) {
-                console.log(avatarData)
-                // setAvatars(data.)
+            if (data) {
+                let avatarNames = data.map(avatar => avatar.name)
+                let avatarUrls = await Promise.all(avatarNames.map(getAvatarUrl));
+                setAvatars(avatarUrls);
 
             }
         } catch (error) {
-            console.log(`error: ${error.message}\n `)
-            alert('error loading user data')
+            console.log(`error: ${error}\n `)
+            alert('error loading avatar urls')
+            
         } finally {
-            setLoading(false);
-
+           
         }
     }, [user, supabase]
     )
 
+    useEffect(() => {
+        getAvatars()
+    }, [user, getAvatars])
 
-    // upsert into db
-    const updateName = async (event) => {
-        event.preventDefault();
-        console.log('changing name')
+    const handleRadio = (avatarChange: string) => {
+        setNewAvatar(avatarChange)
+        setLoading(false)
+    }
+
+
+    const updateAvatar =async () => {
+        setLoading(true);
+        console.log('submitting: ', newAvatar);
         try {
-            setLoading(true)
-            const newName = event.target.elements.newName.value;
-            console.log(`New name: ${newName}`)
-            if (!newName) {
-                alert("You must provide a name to update")
+            
+            if (!newAvatar) {
+                alert("You must select a new avatar!")
                 return
             }
-            console.log(`user: ${user?.id}, name: ${newName}`)
 
             const { error } = await supabase.from('profiles').upsert({
                 user_id: user?.id as string,
-                name: newName,
+                avatarUrl: newAvatar,
             })
             if (error) throw error
-            alert('Profile updated!')
+            alert('Avatar updated!')
         } catch (error) {
             alert(`Error updating the data:${error.message}`)
         } finally {
             setLoading(false)
             router.refresh();
         }
-
     }
-
 
     // fetch data
 
@@ -91,15 +101,28 @@ const ChangeAvatarButton = ({ session }: { session: Session | null }) => {
         <div className="flex flex-col px-2 py-2">
 
             <button onClick={handleClick} className="w-32 bg-white border-4 border-teal-500 rounded-md ">Change Avatar</button>
-            {showForm && <div className="flex flex-row justify-start py-1 gap-2">
-                <div className="text-black">
-                    select an avatar
-                    {/* {avatars?.map((avatar) => (
-                        <li key={avatar.name}>
-                            {avatar.name}
-                        </li>
-                    ))} */}
+            {showForm && <div className="justify-start py-2 gap-2">
+                select an avatar
+                <div className="gap-3 mt-2 shrink-0 flex overflow-x-scroll ">
+                   
+                    {avatars?.map((avatar) => (
+                        <div key={avatar} className="shrink-0">
+                            <input type="radio" onChange={()=>handleRadio(avatar)} name="option" id={avatar} className=""></input>
+                            <Image 
+                                src={avatar}
+                                // fill={true}
+                                width={100}
+                                height={100}
+                                alt={"avatar"}
+                                objectFit="cover"
+                    
+                            />
+
+                        </div>
+                    ))}
+                    
                 </div>
+                <button onClick={updateAvatar} disabled={loading} className="w-32 bg-teal-500 border-2 text-white disabled:bg-opacity-50 border-orange-500 mt-2 rounded-md ">Save</button>
             </div>}
 
 

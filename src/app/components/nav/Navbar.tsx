@@ -25,7 +25,7 @@ export default async function Navbar() {
     return (
         <nav className="bg-white text-black">
             <div className="mx-auto max-w-7xl md:px-10 px-0 lg:px-8">
-                <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-row items-center justify-between py-1">
 
                     <Link href="/">
                         <Image

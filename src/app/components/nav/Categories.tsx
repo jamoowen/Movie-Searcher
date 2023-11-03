@@ -30,7 +30,7 @@ export default function Categories() {
     return (
         <>
             <div onClick={toggleOpen}
-                className="cursor-pointer flex-row items-center row-span-1 flex gap-1"
+                className="cursor-pointer flex-row items-center text-lg row-span-1 flex gap-1"
             >
                 <div>Find a Movie </div>
                 <BiSolidCameraMovie />

@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 
 const ChangeNameButton = ({ session }: { session: Session | null }) => {
-    const supabase = createClientComponentClient();
+    const supabase = createClientComponentClient<Database>();
     const router = useRouter();
     const user = session?.user;
 

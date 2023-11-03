@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 const ChangePasswordButton = ({ session }: { session: Session | null }) => {
     const router = useRouter()
-    const supabase = createClientComponentClient();
+    const supabase = createClientComponentClient<Database>();
     const [loading, setLoading] = useState(false);
     const [showPasswordForm, setShowPasswordForm] = useState(false);
     const [showPassword, setShowPassword] = useState("password");
