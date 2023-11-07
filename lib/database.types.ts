@@ -11,48 +11,87 @@ export interface Database {
     Tables: {
       actors: {
         Row: {
-          birthYear: number | null
-          fullName: string | null
-          id: number
-          knownMovies: string[] | null
+          birthYear: number
+          knownFor: string
+          nconst: string
+          primaryName: string
+          titlesTconst: string | null
         }
         Insert: {
-          birthYear?: number | null
-          fullName?: string | null
-          id?: number
-          knownMovies?: string[] | null
+          birthYear: number
+          knownFor: string
+          nconst: string
+          primaryName: string
+          titlesTconst?: string | null
         }
         Update: {
-          birthYear?: number | null
-          fullName?: string | null
-          id?: number
-          knownMovies?: string[] | null
+          birthYear?: number
+          knownFor?: string
+          nconst?: string
+          primaryName?: string
+          titlesTconst?: string | null
+        }
+        Relationships: []
+      }
+      directors: {
+        Row: {
+          birthYear: number
+          dirconst: string
+          knownFor: string
+          primaryName: string
+          titlesTconst: string
+        }
+        Insert: {
+          birthYear: number
+          dirconst: string
+          knownFor: string
+          primaryName: string
+          titlesTconst: string
+        }
+        Update: {
+          birthYear?: number
+          dirconst?: string
+          knownFor?: string
+          primaryName?: string
+          titlesTconst?: string
         }
         Relationships: []
       }
       movies: {
         Row: {
-          director: string | null
-          movieName: string | null
-          movieRating: number | null
-          releaseYear: number | null
-          starringActors: string | null
+          averageRating: number
+          cast: string
+          castNconst: string
+          dirconst: string
+          director: string
+          genres: string
+          primaryTitle: string
+          runtimeMinutes: number
+          startYear: number
           tconst: string
         }
         Insert: {
-          director?: string | null
-          movieName?: string | null
-          movieRating?: number | null
-          releaseYear?: number | null
-          starringActors?: string | null
+          averageRating: number
+          cast: string
+          castNconst: string
+          dirconst: string
+          director: string
+          genres: string
+          primaryTitle: string
+          runtimeMinutes: number
+          startYear: number
           tconst: string
         }
         Update: {
-          director?: string | null
-          movieName?: string | null
-          movieRating?: number | null
-          releaseYear?: number | null
-          starringActors?: string | null
+          averageRating?: number
+          cast?: string
+          castNconst?: string
+          dirconst?: string
+          director?: string
+          genres?: string
+          primaryTitle?: string
+          runtimeMinutes?: number
+          startYear?: number
           tconst?: string
         }
         Relationships: []
@@ -85,20 +124,44 @@ export interface Database {
       }
       watchlist: {
         Row: {
-          directorNumber: string | null
+          averageRating: number
+          cast: string
+          castNconst: string
+          dirconst: string
+          director: string
+          genres: string
           id: number
+          primaryTitle: string
+          runtimeMinutes: number
+          startYear: number
           tconst: string
           user_id: string
         }
         Insert: {
-          directorNumber?: string | null
+          averageRating: number
+          cast: string
+          castNconst: string
+          dirconst: string
+          director: string
+          genres: string
           id?: number
+          primaryTitle: string
+          runtimeMinutes: number
+          startYear: number
           tconst: string
           user_id: string
         }
         Update: {
-          directorNumber?: string | null
+          averageRating?: number
+          cast?: string
+          castNconst?: string
+          dirconst?: string
+          director?: string
+          genres?: string
           id?: number
+          primaryTitle?: string
+          runtimeMinutes?: number
+          startYear?: number
           tconst?: string
           user_id?: string
         }

@@ -8,6 +8,21 @@ const config: Config = {
   ],
   theme: {
     extend: {
+
+      keyframes: {
+        slide: {
+          '0%': { left: '-150%' },
+          '35%': { left: '50%' },
+          '65%': { left: '50%' },
+          '100%': { left: '150%' },
+        }
+      },
+      
+      animation: {
+        slide: 'slide 2s linear',
+        spinFinite: 'spin 5s '
+      }, 
+
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':

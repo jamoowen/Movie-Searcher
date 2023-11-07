@@ -80,9 +80,9 @@ const Signin = () => {
                     <button type="submit" disabled={loading} className="bg-green-400 disabled:bg-slate-400 rounded-md mt-5 block w-full px-3 py-2">Sign In</button>
                 </label>
             </form>
-            < div onClick={() => { setShowPasswordReset(!showPasswordReset) }} className="py-2 items-center text-black" >Forgotten pasword?</div>
+            < div onClick={() => { setShowPasswordReset(!showPasswordReset) }} className="cursor-pointer py-2 items-center text-black" >Forgotten pasword?</div>
             {showPasswordReset &&
-                <div>
+                <div className="">
                     <form onSubmit={handlePasswordReset}>
                         <input type="email" autoComplete="email" name="resetEmail" placeholder="Enter your email" className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm text-back shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 " />
                         <button type="submit" disabled={loading} className="bg-yellow-500 disabled:bg-slate-400 rounded-md mt-2 block w-full px-3 py-2">Reset Password</button>

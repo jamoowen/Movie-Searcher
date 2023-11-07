@@ -39,18 +39,18 @@ const AccountForm: React.FC<AccountFormProps> = ({ session, data }) => {
             setAvatar(data?.avatarUrl)
         }
 
-    }, [data?.name])
+    }, [data?.name, data?.avatarUrl])
 
 
 
     return (
         <>
-            <div className="mx-auto my-auto min-h-screen mt-7 md:w-3/6 sm:w-8/12 w-11/12 rounded-sm px-2 py-2 bg-white">
+           
                 <div className="flex flex-col py-2">
                     {(avatar && name) ?
                         <>
-                            <div className="text-3xl w-min  font-pixel p-3 -rotate-6 text-white bg-orange-500 mb-3">
-                                <div className="rotate-6">Hello <span className='font-bold'>{name}</span></div>
+                            <div className="text-3xl w-min  font-pixel py-2 px-5 -rotate-6 text-white bg-orange-500 mb-3">
+                                <div className="rotate-6">Hello <span className='font-serif font-bold'>{name}</span></div>
                             </div>
 
                             <Image
@@ -68,7 +68,7 @@ const AccountForm: React.FC<AccountFormProps> = ({ session, data }) => {
                 <ChangePasswordButton session={session} />
                 <ChangeAvatarButton session={session} />
 
-            </div>
+
         </>
     )
 

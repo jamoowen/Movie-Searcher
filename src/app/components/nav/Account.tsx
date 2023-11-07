@@ -6,9 +6,15 @@ import { MdAccountCircle } from "react-icons/md";
 import { createClientComponentClient, Session } from "@supabase/auth-helpers-nextjs"
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { ClickAwayListener } from "@mui/base";
 // import { AuthButton }
 
+type Profiles = Database['public']['Tables']['profiles']['Row'];
 
+type AccountProps = {
+    session: Session | null;
+    data: Profiles | null;
+}
 
 const accountOptions = [
     { label: "Account", path: "/account" },
@@ -16,7 +22,7 @@ const accountOptions = [
 ]
 
 
-export default function Account({ session, data }) {
+const Account: React.FC<AccountProps> = ({ session, data }) => {
 
     const supabase = createClientComponentClient();
     const router = useRouter();
@@ -25,8 +31,15 @@ export default function Account({ session, data }) {
 
 
     const [open, setOpen] = useState(false)
+
+
     const toggleOpen = () => { setOpen(!open) }
-    const toggleClose = () => { setOpen(false) }
+    const toggleClose = () => {
+        if (open) {
+            setOpen(false)
+        }
+
+    }
 
     const handleSignOut = async () => {
         console.log("signing out..")
@@ -34,20 +47,17 @@ export default function Account({ session, data }) {
         router.refresh();
         console.log("signed out")
     }
-
+    // document.getElementById('mainBody')?.addEventListener('click', toggleClose)
 
 
     return (
-
         <div className="flex-row flex gap-2 items-center">
-
-            <div onClick={toggleOpen}>
-
-                <div className="cursor-pointer flex-row items-center row-span-1 flex gap-1">
-                    {(user) ? <div className="text-black">
+            <div>
+                <div onClick={toggleOpen} className="cursor-pointer flex-row items-center row-span-1 flex gap-1">
+                    {(user && data?.avatarUrl) ? <div className="text-black">
                         <Image
                             alt="user avatar"
-                            src={data.avatarUrl}
+                            src={data?.avatarUrl}
                             width="50"
                             height="50"
                         />
@@ -56,25 +66,27 @@ export default function Account({ session, data }) {
 
                 </div>
 
-                <div onMouseLeave={toggleClose} className="absolute bg-white  shadow-md w-[40vw] rounded-md right-0 top-12">
+                <div className="absolute bg-white  shadow-md w-[40vw] rounded-md right-0 top-12">
                     {open && (
-                        <div className="fixed flex  ">
-                            <div className="bg-white shadow-md w-[40vw] rounded-md p-4">
-                                <div className="text-slate-400 font-light italic font-serif opacity-50">
-                                    {data.name}
-                                </div>
-
-                                <Link href="/account" >
-                                    <div className="hover:bg-gray-100 rounded-md p-2 cursor-pointer">
-                                        Account
+                        <ClickAwayListener onClickAway={toggleClose}>
+                            <div className="fixed flex  ">
+                                <div className="bg-white shadow-md w-[40vw] rounded-md p-4">
+                                    <div className="text-slate-400 font-light italic font-serif opacity-50">
+                                        {data?.name}
                                     </div>
-                                </Link>
 
-                                <div onClick={handleSignOut} className="hover:bg-gray-100 rounded-md p-2 cursor-pointer">
-                                    Sign Out
+                                    <Link href="/account" >
+                                        <div className="hover:bg-gray-100 rounded-md p-2 cursor-pointer">
+                                            Account
+                                        </div>
+                                    </Link>
+
+                                    <div onClick={handleSignOut} className="hover:bg-gray-100 rounded-md p-2 cursor-pointer">
+                                        Sign Out
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </ClickAwayListener>
                     )}
 
                 </div>
@@ -83,3 +95,4 @@ export default function Account({ session, data }) {
 
     )
 }
+export default Account

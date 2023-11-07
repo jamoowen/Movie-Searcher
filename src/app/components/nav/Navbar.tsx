@@ -16,16 +16,17 @@ export default async function Navbar() {
     const user = session?.user;
 
     const { data, error, status } = await supabase.from('profiles')
-        .select('name, avatarUrl')
+        .select('name, avatarUrl, user_id')
         .eq('user_id', user?.id)
         .single();
 
 
 
     return (
+
         <nav className="bg-white text-black">
-            <div className="mx-auto max-w-7xl md:px-10 px-0 lg:px-8">
-                <div className="flex flex-row items-center justify-between py-1">
+            <div className="mx-auto md:px-10 lg:px-8">
+                <div className="flex items-center flex-row justify-between py-1">
 
                     <Link href="/">
                         <Image
@@ -55,5 +56,6 @@ export default async function Navbar() {
 
             </div>
         </nav>
+ 
     )
 }

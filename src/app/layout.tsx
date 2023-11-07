@@ -12,8 +12,8 @@ export const metadata = {
   description: 'Find a movie to watch',
 }
 
-const font = Nunito({ 
-  subsets: ['latin'], 
+const font = Nunito({
+  subsets: ['latin'],
 });
 
 export default function RootLayout({
@@ -23,10 +23,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head></head>
       <body className={inter.className}>
         <Navbar />
-        
-        {children}</body>
+        <main id='mainBody'>
+          <div className="min-h-screen w-full flex overflow bg-teal-500">
+            
+              {children}
+            </div>
+    
+
+        </main>
+
+      </body>
     </html>
   )
 }
