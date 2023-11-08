@@ -1,7 +1,7 @@
 import { createServerComponentClient, Session } from "@supabase/auth-helpers-nextjs"
 import AccountForm from "../components/account/AccountForm";
 import { cookies } from "next/headers";
-import { useRouter } from "next/navigation";
+
 
 
 const Account = async () => {
@@ -10,7 +10,7 @@ const Account = async () => {
     const supabase = createServerComponentClient<Database>({ cookies: () => cookieStore })
 
     const { data: { session } } = await supabase.auth.getSession();
-    const router = useRouter();
+
 
     const user = session?.user;
 

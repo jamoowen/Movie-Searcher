@@ -46,7 +46,7 @@ const AccountForm: React.FC<AccountFormProps> = ({ session, data }) => {
     return (
         <>
            
-                <div className="flex flex-col py-2">
+                <div className="flex flex-col py-2 text-black">
                     {(avatar && name) ?
                         <>
                             <div className="text-3xl w-min  font-pixel py-2 px-5 -rotate-6 text-white bg-orange-500 mb-3">

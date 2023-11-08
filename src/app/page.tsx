@@ -18,7 +18,7 @@ export default async function Index() {
 
   return (
 
-    <div className="mx-auto my-auto min-h-screen mt-7 overflow-hidden animate-slide md:w-4/6 w-11/12 rounded-sm px-2 py-2 bg-white">
+    <div className="mx-auto my-auto min-h-screen mt-7 overflow-hidden text-black animate-slide md:w-4/6 w-11/12 rounded-sm px-2 py-2 bg-white">
       <div className="">
         <Image
           alt="Movie search logo"

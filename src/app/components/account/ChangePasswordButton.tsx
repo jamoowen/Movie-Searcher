@@ -62,7 +62,7 @@ const ChangePasswordButton = ({ session }: { session: Session | null }) => {
     // fetch data
 
     return (
-        <div className="flex flex-col px-2 py-2">
+        <div className="flex flex-col px-2 py-2 text-black">
 
             <button onClick={handleChangePassword} className="w-40 bg-white border-4 border-teal-500 rounded-md">Change Password</button>
             {showPasswordForm && <div className="flex flex-row justify-start py-2 gap-2 ">

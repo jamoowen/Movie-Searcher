@@ -52,7 +52,7 @@ const ChangeNameButton = ({ session }: { session: Session | null }) => {
     // fetch data
 
     return (
-        <div className="flex flex-col px-2 py-2">
+        <div className="flex flex-col px-2 py-2 text-black">
 
             <button onClick={handleChangeName} className="w-32 bg-white border-4 border-teal-500 rounded-md ">Change Name</button>
             {showNameForm && <div className="flex flex-row justify-start py-1 gap-2">
