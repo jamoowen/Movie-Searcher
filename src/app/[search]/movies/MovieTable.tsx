@@ -35,11 +35,17 @@ const MovieTable = ({ session }: { session: Session | null }) => {
     const supabase = createClientComponentClient<Database>();
     const user = session?.user;
 
-    const searchObject = {
+    type SearchKeys = string;
+    type SearchValues = string;
+
+    type SearchObject = Record<SearchKeys, SearchValues>;
+
+    const searchObject: SearchObject = {
         "primaryTitle": "Search by Movie Title",
         "cast": "Search by Actor",
         "director": "Search by Director",
-    }
+    };
+
 
     const [movieData, setMovieData] = useState<Movies[] | null>(null);
     const [searchParams, setSearchParams] = useState<string | null>(null);
@@ -57,10 +63,10 @@ const MovieTable = ({ session }: { session: Session | null }) => {
     }
 
     useEffect(() => {
-        
+
         (async () => {
-            
-            try{
+
+            try {
                 if (searchParams !== null && searchColumn !== null) {
                     const { data, error } = await supabase
                         .from('movies')
@@ -81,7 +87,7 @@ const MovieTable = ({ session }: { session: Session | null }) => {
             finally {
                 setLoading(false);
             }
-           
+
             // console.log(`Movie Data: ${data[0]}`)
 
         })
@@ -133,10 +139,10 @@ const MovieTable = ({ session }: { session: Session | null }) => {
                             <div className='w-64 mr-2'>{`${searchObject[searchCategory]}`}</div>
                             <input name='inputCol' type="hidden" value='primaryTitle' />
                             <input name='inputText' type="text" className="w-64 text-sm font-sans font-normal leading-5 px-3 py-2 rounded-lg shadow-md shadow-slate-100 dark:shadow-slate-900 focus:shadow-lg border border-solid border-slate-300 hover:border-teal-500 " />
-                            {loading ? <div className='ml-2 animate-spin'><AiOutlineLoading3Quarters/></div>
-                            : <button type='submit' className=" w-24 text-sm font-sans bg-teal-500 bg-opacity-20 hover:bg-opacity-100 font-normal leading-5 px-3 py-2 rounded-lg shadow-md shadow-slate-100 dark:shadow-slate-900 focus:shadow-lg border border-solid border-slate-300 hover:border-black "> Search</button>
+                            {loading ? <div className='ml-2 animate-spin'><AiOutlineLoading3Quarters /></div>
+                                : <button type='submit' className=" w-24 text-sm font-sans bg-teal-500 bg-opacity-20 hover:bg-opacity-100 font-normal leading-5 px-3 py-2 rounded-lg shadow-md shadow-slate-100 dark:shadow-slate-900 focus:shadow-lg border border-solid border-slate-300 hover:border-black "> Search</button>
                             }
-                            
+
 
                         </form>
 
