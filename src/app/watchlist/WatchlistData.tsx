@@ -64,7 +64,7 @@ const WatchlistData = ({ session }: { session: Session | null }) => {
             }
         })
             ();
-    }, [WatchlistData])
+    }, [])
 
 
 
