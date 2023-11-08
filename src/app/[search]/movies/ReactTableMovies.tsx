@@ -15,6 +15,7 @@ import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import { createClientComponentClient, Session } from "@supabase/auth-helpers-nextjs";
 import { AiOutlineCheck } from 'react-icons/ai'
 import { CiSquareRemove } from 'react-icons/ci'
+import { useRouter } from "next/navigation";
 
 
 type Movies = Database['public']['Tables']['movies']['Row'];
@@ -31,6 +32,7 @@ type Movies = Database['public']['Tables']['movies']['Row'];
 const ReactTableMovies = ({ data, session }: { data: Movies[], session: Session | null }) => {
     const user = session?.user;
     const supabase = createClientComponentClient<Database>();
+    const router = useRouter();
     // const { user } = supabase.auth.getUser();
 
     const movieData = data;
@@ -164,19 +166,26 @@ const ReactTableMovies = ({ data, session }: { data: Movies[], session: Session 
         tconst: string;
         user_id: string;
     }
-    
+
 
     // if the movie title cell is clicked => a button pops up with a bg covering the screen. 
     // gives the option to add to watchlist
     const handleRowClick = (row: MovieRow) => {
-        console.log('test')
-        setAddButton(true);
-        setPopupVis(true);
+        if (user) {
+            setAddButton(true);
+            setPopupVis(true);
 
-        // selected is just used to pass the name to the popup
-        // selectedRow is the row which will be added to watchlist
-        setSelected(row['primaryTitle'])
-        setSelectedRow(row);
+            // selected is just used to pass the name to the popup
+            // selectedRow is the row which will be added to watchlist
+            setSelected(row['primaryTitle'])
+            setSelectedRow(row);
+        } else {
+            if (confirm("Sign in to add to watchlist!")) {
+                router.push('/signin')
+              } else {
+                
+              }
+        }
 
     }
 
@@ -185,19 +194,13 @@ const ReactTableMovies = ({ data, session }: { data: Movies[], session: Session 
     const handleAdd = async () => {
 
         if (user && selectedRow) {
-            console.log('adding to watchlist: ', selected)
+            // console.log('adding to watchlist: ', selected)
             var user_id = { user_id: user.id };
             // type rowData = { [key: string]: any };
             var tempRow: any = selectedRow
-            tempRow.user_id= user.id;
+            tempRow.user_id = user.id;
             const rowData: Watchlist = tempRow;
 
-            
-          
-            // const tester = { user_id: user?.id, primaryTitle: 'be', director: 'ye', cast: 'ss', tconst: 'tconst', dirconst: 'dirconst', castNconst: 'castNconst', runtimeMinutes: 98, averageRating: 8, genres: 'us, js' }
-
-            // rowData['user_id'] = user?.id;
-            console.log(`data: ${rowData.user_id}`)
             try {
                 await supabase
                     .from('watchlist')
@@ -206,7 +209,6 @@ const ReactTableMovies = ({ data, session }: { data: Movies[], session: Session 
             } catch (error) {
                 alert(`error adding to watchlist: ${error}`)
             }
-
 
             finally {
                 setAddButton(false)
@@ -232,7 +234,7 @@ const ReactTableMovies = ({ data, session }: { data: Movies[], session: Session 
                                     }
                                 </div>
                                 <div className="absolute top-0 right-0">
-                                    <button onClick={()=>setPopupVis(false)} className=" rounded-sm text-red text-xl"><CiSquareRemove/></button>
+                                    <button onClick={() => setPopupVis(false)} className=" rounded-sm text-red text-xl"><CiSquareRemove /></button>
                                 </div>
                             </div>
                         </div>

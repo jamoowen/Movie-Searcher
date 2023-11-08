@@ -13,7 +13,7 @@ export async function middleware(req: NextRequest) {
     console.log("redirecting...")
     return NextResponse.redirect(new URL('/account', req.url))
   }
-  if (!user && req.nextUrl.pathname === '/account') {
+  if (!user && req.nextUrl.pathname === '/account' || !user && req.nextUrl.pathname=='/watchlist') {
     console.log('shouldnt be on account page');
     return NextResponse.redirect(new URL('/', req.url))
   } 
