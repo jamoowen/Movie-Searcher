@@ -83,7 +83,7 @@ const WatchlistData = ({ session }: { session: Session | null }) => {
                        
 
                     </div>
-                    <WatchlistTable session={session} data={watchlistData} />
+                    <WatchlistTable session={session} defaultData={watchlistData} />
                 </div>
 
 

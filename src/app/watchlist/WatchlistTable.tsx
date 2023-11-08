@@ -6,6 +6,7 @@ import {
     SortingState,
     useReactTable,
     PaginationState,
+    getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
 
@@ -35,6 +36,7 @@ type Watchlist = {
 }
 
 
+
 /**
  * @prop {Watchlist[]} data watchlist data passed from parent component (WatchlistData.tsx)
  * @prop {Session} session a session object to interact with supabase auth
@@ -44,12 +46,19 @@ type Watchlist = {
  * @dev The table has an click event handler on the primaryTitle col which allows users to delete from watchlist
  */
 
-const WatchlistTable = ({ movieData, session }: { movieData: Watchlist[], session: Session | null }) => {
+const WatchlistTable = ({ defaultData, session }: {defaultData: Watchlist[], session: Session | null }) => {
+
+    // const [mdata, setMdata] = useState(data)
+    // console.log('data here: ', mdata)
+    // console.log('d:', data)
+    // console.log('sesh: ', session)
+
+
     const user = session?.user;
     const supabase = createClientComponentClient<Database>();
     // const { user } = supabase.auth.getUser();
 
-    const data = movieData.slice();
+    
 // 
 
 
@@ -58,7 +67,8 @@ const WatchlistTable = ({ movieData, session }: { movieData: Watchlist[], sessio
     */
 
     const columnHelper = createColumnHelper<Watchlist>();
-    const [sorting, setSorting] = useState<SortingState>([])
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const [globalFilter, setGlobalFilter] = useState('');
 
     const columns = [
         columnHelper.accessor("primaryTitle", {
@@ -113,15 +123,28 @@ const WatchlistTable = ({ movieData, session }: { movieData: Watchlist[], sessio
         }),
 
     ]
-
+    const [data, setData] = useState<Watchlist[]>(() => [...defaultData]);
+    const [originalData, setOriginalData] = useState(() => [...defaultData]);
 
     const table = useReactTable({
         data,
         columns,
+        onGlobalFilterChange: setGlobalFilter,
+        
+        getFilteredRowModel: getFilteredRowModel(),
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
+        meta: {
+            removeRow: (rowIndex: number) => {
+                const setFilterFunc = (old: Watchlist[]) =>
+                old.filter((_row: Watchlist, index: number) => index!== rowIndex);
+                setData(setFilterFunc);
+                setOriginalData(setFilterFunc);
+            }
+        },
         state: {
+            globalFilter,
             sorting,
         },
         onSortingChange: setSorting,
@@ -166,14 +189,18 @@ const WatchlistTable = ({ movieData, session }: { movieData: Watchlist[], sessio
     // if the movie title cell is clicked => a button pops up with a bg covering the screen. 
     // gives the option to add to watchlist
     const handleRowClick = (row) => {
-        console.log(row)
+        // const newData = data.splice(row.index)
+        // console.log(data)
+        // console.log(newData)
+
+        
         setRemoveButton(true);
         setPopupVis(true);
 
         // selected is just used to pass the name to the popup
         // selectedRow is the row which will be added to watchlist
-        setSelected(row['primaryTitle'])
-        setSelectedRow(row.tconst);
+        setSelected(row.original['primaryTitle'])
+        setSelectedRow(row);
 
     }
 
@@ -183,15 +210,15 @@ const WatchlistTable = ({ movieData, session }: { movieData: Watchlist[], sessio
         console.log('rowdata: ')
 
         if (user && selectedRow) {
-            console.log('removing from watchlist: ', selected)
-
-            console.log(`removing tconst: ${selectedRow}}`)
+        
             try {
                 await supabase
                     .from('watchlist')
                     .delete()
-                    .eq('tconst', selectedRow)
-
+                    .eq('tconst', selectedRow.original.tconst)
+                let dataCopy = data.slice();
+                dataCopy.splice(selectedRow.index, 1)
+                setData(dataCopy);
 
             } catch (error) {
                 alert(`error adding to watchlist: ${error}`)
@@ -200,7 +227,7 @@ const WatchlistTable = ({ movieData, session }: { movieData: Watchlist[], sessio
 
             finally {
                 setRemoveButton(false)
-                setTimeout(() => setPopupVis(false), 2000)
+                setTimeout(() => setPopupVis(false), 500)
             }
 
         }
@@ -273,7 +300,7 @@ const WatchlistTable = ({ movieData, session }: { movieData: Watchlist[], sessio
                         {table.getRowModel().rows.map((row) => (
 
                             // <tr className="hover:cursor-pointer hover:font-semibold" id={row.getValue('tconst')} key={row.id} onClick={(event) => handleRowClick(row.getValue('tconst'), row.getValue('primaryTitle'))}>
-                            <tr className="hover:bg-slate-100" id={row.getValue('tconst')} key={row.id} >
+                            <tr className="hover:bg-slate-100 border-black border-opacity-20 border" id={row.getValue('tconst')} key={row.id} >
 
 
                                 {row.getVisibleCells().map((cell) => (

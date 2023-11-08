@@ -265,7 +265,7 @@ const ReactTableMovies = ({ data, session }: { data: Movies[], session: Session 
                         {table.getRowModel().rows.map((row) => (
 
                             // <tr className="hover:cursor-pointer hover:font-semibold" id={row.getValue('tconst')} key={row.id} onClick={(event) => handleRowClick(row.getValue('tconst'), row.getValue('primaryTitle'))}>
-                            <tr className="hover:bg-slate-100" id={row.getValue('tconst')} key={row.id} >
+                            <tr className="hover:bg-slate-100 border-black border-opacity-20 border" id={row.getValue('tconst')} key={row.id} >
 
 
                                 {row.getVisibleCells().map((cell) => (
