@@ -9,6 +9,7 @@ import {
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
+    Table,
 
 } from "@tanstack/react-table";
 import React, { useState } from "react";
@@ -48,19 +49,12 @@ type Watchlist = {
 
 const WatchlistTable = ({ defaultData, session }: {defaultData: Watchlist[], session: Session | null }) => {
 
-    // const [mdata, setMdata] = useState(data)
-    // console.log('data here: ', mdata)
-    // console.log('d:', data)
-    // console.log('sesh: ', session)
-
-
-    const user = session?.user;
-    const supabase = createClientComponentClient<Database>();
-    // const { user } = supabase.auth.getUser();
+    // !!! note to self - to delete data from a tanstack table, you must first set the state of the table data
+    // (see below in table instantialtion)
 
     
-// 
-
+    const user = session?.user;
+    const supabase = createClientComponentClient<Database>();
 
     /* 
     ---------------Table DEF
@@ -124,27 +118,15 @@ const WatchlistTable = ({ defaultData, session }: {defaultData: Watchlist[], ses
 
     ]
     const [data, setData] = useState<Watchlist[]>(() => [...defaultData]);
-    const [originalData, setOriginalData] = useState(() => [...defaultData]);
+    
 
     const table = useReactTable({
         data,
         columns,
-        onGlobalFilterChange: setGlobalFilter,
-        
-        getFilteredRowModel: getFilteredRowModel(),
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
-        meta: {
-            removeRow: (rowIndex: number) => {
-                const setFilterFunc = (old: Watchlist[]) =>
-                old.filter((_row: Watchlist, index: number) => index!== rowIndex);
-                setData(setFilterFunc);
-                setOriginalData(setFilterFunc);
-            }
-        },
         state: {
-            globalFilter,
             sorting,
         },
         onSortingChange: setSorting,
@@ -180,15 +162,16 @@ const WatchlistTable = ({ defaultData, session }: {defaultData: Watchlist[], ses
     */
 
 
+
     const [selected, setSelected] = useState<string | null>(null);
-    const [selectedRow, setSelectedRow] = useState<{} | null>(null);
+    const [selectedRow, setSelectedRow] = useState< any | null>(null);
     const [popupVis, setPopupVis] = useState(false);
     const [removeButton, setRemoveButton] = useState(true);
 
 
     // if the movie title cell is clicked => a button pops up with a bg covering the screen. 
     // gives the option to add to watchlist
-    const handleRowClick = (row) => {
+    const handleRowClick = (row: any) => {
         // const newData = data.splice(row.index)
         // console.log(data)
         // console.log(newData)
