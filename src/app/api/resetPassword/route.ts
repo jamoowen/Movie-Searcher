@@ -6,7 +6,7 @@ import type { NextRequest } from 'next/server'
 // import type { Database } from '@/lib/database.types'
 
 export async function GET(request: NextRequest) {
-  console.log('!!! resetting password')
+  // console.log('!!! resetting password')
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
 

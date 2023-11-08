@@ -9,18 +9,25 @@ import { cookies } from "next/headers"
 
 export default async function Navbar() {
 
-    const supabase = createServerComponentClient({ cookies });
-    const {
-        data: { session },
-    } = await supabase.auth.getSession();
+    const cookieStore = cookies()
+    const supabase = createServerComponentClient<Database>({ cookies: () => cookieStore })
+    const { data: { session }, } = await supabase.auth.getSession();
     const user = session?.user;
 
-    const { data, error, status } = await supabase.from('profiles')
-        .select('name, avatarUrl, user_id')
-        .eq('user_id', user?.id)
-        .single();
 
+    const fetchData = async () => {
+        if (user) {
+            const { data, error, status } = await supabase.from('profiles')
+                .select('name, avatarUrl, user_id')
+                .eq('user_id', user?.id)
+                .single();
+            return data
+        } else {
+            return null;
+        }
+    }
 
+    const data = await fetchData();
 
     return (
 
@@ -48,14 +55,10 @@ export default async function Navbar() {
                         </>
                         : <SignInButton />}
 
-
-
-
-
                 </div>
 
             </div>
         </nav>
- 
+
     )
 }

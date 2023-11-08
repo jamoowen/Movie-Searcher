@@ -7,8 +7,9 @@ import WatchlistData from "./WatchlistData";
 
 
 export default async function Movies() {
-    console.log('what going on')
-    const supabase = createServerComponentClient<Database>({ cookies });
+  
+    const cookieStore = cookies()
+    const supabase = createServerComponentClient<Database>({ cookies: () => cookieStore })
 
     const { data: { session } } = await supabase.auth.getSession();
     const user = session?.user;

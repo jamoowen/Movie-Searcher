@@ -25,7 +25,7 @@ const ChangePasswordButton = ({ session }: { session: Session | null }) => {
     }
 
 
-    const updatePassword = async (event) => {
+    const updatePassword = async (event:any) => {
         event.preventDefault();
         console.log('changing password')
         try {
@@ -51,7 +51,7 @@ const ChangePasswordButton = ({ session }: { session: Session | null }) => {
             if (error) throw error
             alert('Password updated!')
         } catch (error) {
-            alert(`Error updating the data:${error.message}`)
+            alert(`Error updating the data:${error}`)
         } finally {
             setLoading(false)
             router.refresh();

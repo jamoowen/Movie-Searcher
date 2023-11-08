@@ -151,7 +151,20 @@ const ReactTableMovies = ({ data, session }: { data: Movies[], session: Session 
     const [addButton, setAddButton] = useState(true);
 
     type MovieRow = Database['public']['Tables']['movies']['Row'];
-    type Watchlist = Database['public']['Tables']['watchlist']['Insert']
+    type Watchlist = {
+        averageRating: number;
+        cast: string;
+        castNconst: string;
+        dirconst: string;
+        director: string;
+        genres: string;
+        primaryTitle: string;
+        runtimeMinutes: number;
+        startYear: number;
+        tconst: string;
+        user_id: string;
+    }
+    
 
     // if the movie title cell is clicked => a button pops up with a bg covering the screen. 
     // gives the option to add to watchlist
@@ -175,9 +188,12 @@ const ReactTableMovies = ({ data, session }: { data: Movies[], session: Session 
             console.log('adding to watchlist: ', selected)
             var user_id = { user_id: user.id };
             // type rowData = { [key: string]: any };
+            var tempRow: any = selectedRow
+            tempRow.user_id= user.id;
+            const rowData: Watchlist = tempRow;
 
-            var rowData: Watchlist = selectedRow;
-            rowData.user_id = user.id;
+            
+          
             // const tester = { user_id: user?.id, primaryTitle: 'be', director: 'ye', cast: 'ss', tconst: 'tconst', dirconst: 'dirconst', castNconst: 'castNconst', runtimeMinutes: 98, averageRating: 8, genres: 'us, js' }
 
             // rowData['user_id'] = user?.id;

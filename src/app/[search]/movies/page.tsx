@@ -5,7 +5,9 @@ import MovieTable from "./MovieTable";
 
 
 export default async function Movies() {
-  const supabase = createServerComponentClient({ cookies });
+  const cookieStore = cookies()
+  const supabase = createServerComponentClient<Database>({ cookies: () => cookieStore })
+
 
   const {
     data: { session },

@@ -173,15 +173,9 @@ const WatchlistTable = ({ defaultData, session }: {defaultData: Watchlist[], ses
     // gives the option to add to watchlist
     const handleRowClick = (row: any) => {
         // const newData = data.splice(row.index)
-        // console.log(data)
-        // console.log(newData)
-
-        
+    
         setRemoveButton(true);
         setPopupVis(true);
-
-        // selected is just used to pass the name to the popup
-        // selectedRow is the row which will be added to watchlist
         setSelected(row.original['primaryTitle'])
         setSelectedRow(row);
 

@@ -88,7 +88,7 @@ const ChangeAvatarButton = ({ session }: { session: Session | null }) => {
             if (error) throw error
             alert('Avatar updated!')
         } catch (error) {
-            alert(`Error updating the data:${error.message}`)
+            alert(`Error updating the data:${error}`)
         } finally {
             setLoading(false)
             router.refresh();

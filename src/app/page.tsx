@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function Index() {
-
-  const supabase = createServerComponentClient({ cookies })
+  const cookieStore = cookies()
+  const supabase = createServerComponentClient<Database>({ cookies: () => cookieStore })
 
   const { data: { user } } = await supabase.auth.getUser();
   if (user) {
@@ -14,18 +14,10 @@ export default async function Index() {
     console.log('error getting session', user)
   }
 
-  // const { data } = await supabase.from("watchlist").select();
-  // const { data: movies } = await supabase.from("movies").select();
-  // const { data: actors } = await supabase.from("actors").select();
+
 
   return (
-    // <ul className="my-auto text-foreground">
-    //   {movies?.map((movie) => (
-    //     <li key={movie.id}>{movie.movieName}, {movie.movieRating}, {movie.releaseYear}
-    //     {movie.director}, {movie.starringActors}
-    //     </li>
-    //   ))}
-    // </ul>
+
     <div className="mx-auto my-auto min-h-screen mt-7 overflow-hidden animate-slide md:w-4/6 w-11/12 rounded-sm px-2 py-2 bg-white">
       <div className="">
         <Image

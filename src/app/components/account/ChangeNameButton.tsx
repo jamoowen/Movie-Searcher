@@ -20,7 +20,7 @@ const ChangeNameButton = ({ session }: { session: Session | null }) => {
     }
 
     // upsert into db
-    const updateName = async (event) => {
+    const updateName = async (event:any) => {
         event.preventDefault();
         console.log('changing name')
         try {
@@ -40,7 +40,7 @@ const ChangeNameButton = ({ session }: { session: Session | null }) => {
             if (error) throw error
             alert('Profile updated!')
         } catch (error) {
-            alert(`Error updating the data:${error.message}`)
+            alert(`Error updating the data:${error}`)
         } finally {
             setLoading(false)
             router.refresh();
