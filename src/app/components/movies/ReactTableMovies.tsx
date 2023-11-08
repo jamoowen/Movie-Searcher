@@ -14,19 +14,24 @@ import React, { useState } from "react";
 import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import { createClientComponentClient, Session } from "@supabase/auth-helpers-nextjs";
 import { AiOutlineCheck } from 'react-icons/ai'
-
+import { CiSquareRemove } from 'react-icons/ci'
 
 
 type Movies = Database['public']['Tables']['movies']['Row'];
+
+/**
+ * @prop {Movies[]} data movie data passed as propes from parent component (movieTable.tsx)
+ * @prop {Session} session a session object to interact with supabase auth
+ * @dev this component instantiates a tanstack table the columns variable below defines the structure of the table
+ *      and is the most critical component
+ * @dev The table uses pagination and sorting
+ * @dev The table has an click event handler on the primaryTitle col which allows users to add the title to their watchlist
+ */
 
 const ReactTableMovies = ({ data, session }: { data: Movies[], session: Session | null }) => {
     const user = session?.user;
     const supabase = createClientComponentClient<Database>();
     // const { user } = supabase.auth.getUser();
-
-    /* 
-    ---------------Table DEF
-    */
 
     const movieData = data;
 
@@ -42,6 +47,12 @@ const ReactTableMovies = ({ data, session }: { data: Movies[], session: Session 
         startYear: number;
         tconst: string;
     }
+
+    /* 
+    ---------------Table DEF
+    */
+
+
 
     const columnHelper = createColumnHelper<Movies>();
     const [sorting, setSorting] = useState<SortingState>([])
@@ -135,29 +146,37 @@ const ReactTableMovies = ({ data, session }: { data: Movies[], session: Session 
 
 
     const [selected, setSelected] = useState<string | null>(null);
-    const [selectedRow, setSelectedRow] = useState<{} | null >(null);
+    const [selectedRow, setSelectedRow] = useState<{} | null>(null);
     const [popupVis, setPopupVis] = useState(false);
     const [addButton, setAddButton] = useState(true);
 
     type MovieRow = Database['public']['Tables']['movies']['Row'];
+    type Watchlist = Database['public']['Tables']['watchlist']['Insert']
 
+    // if the movie title cell is clicked => a button pops up with a bg covering the screen. 
+    // gives the option to add to watchlist
     const handleRowClick = (row: MovieRow) => {
-        // tconst is also the id of the row
+        console.log('test')
         setAddButton(true);
         setPopupVis(true);
 
+        // selected is just used to pass the name to the popup
+        // selectedRow is the row which will be added to watchlist
         setSelected(row['primaryTitle'])
         setSelectedRow(row);
 
     }
 
+    // if the add button in the popup clicked, this func will insert the user_id value to the row data
+    // the data will then be inserted into the users wathlist table
     const handleAdd = async () => {
 
         if (user && selectedRow) {
             console.log('adding to watchlist: ', selected)
             var user_id = { user_id: user.id };
-            type rowData ={[key: string]: any};
-            var rowData: rowData = selectedRow;
+            // type rowData = { [key: string]: any };
+
+            var rowData: Watchlist = selectedRow;
             rowData.user_id = user.id;
             // const tester = { user_id: user?.id, primaryTitle: 'be', director: 'ye', cast: 'ss', tconst: 'tconst', dirconst: 'dirconst', castNconst: 'castNconst', runtimeMinutes: 98, averageRating: 8, genres: 'us, js' }
 
@@ -169,7 +188,7 @@ const ReactTableMovies = ({ data, session }: { data: Movies[], session: Session 
                     .upsert(rowData)
                     .select()
             } catch (error) {
-                alert('error adding to watchlist', error)
+                alert(`error adding to watchlist: ${error}`)
             }
 
 
@@ -185,19 +204,24 @@ const ReactTableMovies = ({ data, session }: { data: Movies[], session: Session 
     return (
         <>
             {popupVis &&
-                <div id="popup" className="fixed bg-white top-[1%] left-[1%]  w-screen h-screen bg-opacity-75 poin text-black">
+                <div id="popup" className="fixed bg-white top-0 left-0  w-screen h-screen bg-opacity-75 poin text-black">
                     <ClickAwayListener onClickAway={() => setPopupVis(false)}>
-                        <div className={`fixed mx-auto my-auto w-64 h-auto py-1 px-2 rounded-sm border border-orange-400 bg-white gap-2 text-black text-sm left-[15%] top-[40%]`}>
-                            <span className="text-bold text-black text-xl">{selected} <br /></span>
-                            <div className="flex flex-row">
-                                {addButton ?
-                                    <button onClick={handleAdd} className=" px-1 ml-2 w-12 bg-orange-400 rounded-md border-white border text-black">Add</button>
-                                    : <> <div className="bg-green-400 ml-2 mr-2 px-1 py-1 w-8 items-center"><AiOutlineCheck /> </div>added</>
-                                }
+                        <div id="box" className={`fixed mx-auto my-auto w-64 h-auto py-1 px-2 rounded-sm border border-orange-400 bg-white gap-2 text-black text-sm left-[15%] top-[40%]`}>
+                            <div className="relative">
+                                <span className="text-bold text-black text-xl">{selected} <br /></span>
+                                <div className="flex flex-row">
+                                    {addButton ?
+                                        <button onClick={handleAdd} className=" px-1 ml-2 w-12 bg-orange-400 rounded-md border-white border text-black">Add</button>
+                                        : <> <div className="bg-green-400 ml-2 mr-2 px-1 py-1 w-8 items-center"><AiOutlineCheck /> </div>added</>
+                                    }
+                                </div>
+                                <div className="absolute top-0 right-0">
+                                    <button onClick={()=>setPopupVis(false)} className=" rounded-sm text-red text-xl"><CiSquareRemove/></button>
+                                </div>
                             </div>
                         </div>
-
                     </ClickAwayListener>
+
                 </div>
             }
 
@@ -245,7 +269,7 @@ const ReactTableMovies = ({ data, session }: { data: Movies[], session: Session 
 
 
                                 {row.getVisibleCells().map((cell) => (
-                                    <td key={cell.id} className={cell.column.id === 'primaryTitle' ? 'text-left hover:cursor-pointer hover:font-semibold' : 'text-left'} onClick={cell.column.id === 'primaryTitle' ? () => handleRowClick(row.original) : () => { }}>
+                                    <td key={cell.id} className={cell.column.id === 'primaryTitle' ? ' text-left hover:cursor-pointer hover:font-semibold' : 'text-left'} onClick={cell.column.id === 'primaryTitle' && popupVis === false ? () => handleRowClick(row.original) : () => { }}>
 
 
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
