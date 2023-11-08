@@ -71,7 +71,7 @@ const WatchlistData = ({ session }: { session: Session | null }) => {
     return (
         <div className='text-black'>
             <div className="text-lg flex flex-col border-teal-500 w-auto border-4 bg-slate-200 px-2 py-2 gap-3 bg-opacity-50 rounded-md mt-2 mb-2">
-                Here's your watchlist! <br />
+                Here&apos;s your watchlist! <br />
                 If you want to remove a movie just click on it 
             </div>
 

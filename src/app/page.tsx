@@ -44,7 +44,7 @@ export default async function Index() {
           </div>
 
           <div>
-            Well, if that is you - your'e in luck! <br />
+            Well, if that is you - your&apos;e in luck! <br />
           Search by ➡️ director, actor, genre, IMDB rating ✅
           </div>
 
