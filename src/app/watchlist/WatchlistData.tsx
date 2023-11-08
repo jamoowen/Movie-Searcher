@@ -48,12 +48,13 @@ const WatchlistData = ({ session }: { session: Session | null }) => {
     useEffect(() => {
         (async () => {
             try {
-                const { data, error } = await supabase
+                if (user) {const { data, error } = await supabase
                     .from('watchlist')
                     .select('*')
-                    .eq('user_id', user?.id)
+                    .eq('user_id', user.id)
                 // console.log('data retrieved: ', data)
                 setWatchlistdata(data)
+            } else {console.log('cant find user data')}
 
             } catch (error) {
                 alert('error fetching movie data')

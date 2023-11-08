@@ -1,9 +1,7 @@
-
-
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers";
-import MovieTable from "@/app/components/movies/MovieTable";
-// import Movies from "@/app/components/movies/Movies";
+import MovieTable from "./MovieTable";
+
 
 
 export default async function Movies() {

@@ -48,7 +48,7 @@ const MovieTable = ({ session }: { session: Session | null }) => {
     const [loading, setLoading] = useState(false);
 
 
-    const handleSearch = (event) => {
+    const handleSearch = (event: any) => {
         event.preventDefault();
         var text = event.target.elements.inputText.value;
         setSearchParams(text);

@@ -15,11 +15,10 @@ type MenuItem = {
 };
 
 const items: MenuItem[] = [
-    { label: "Actors", path: "/search/actors" },
-    { label: "Directors", path: "/search/directors" },
-    // { label: "Genres", path: "/search/genres" },
     { label: "Movies", path: "/search/movies" },
-
+    // { label: "Actors", path: "/search/actors" },
+    // { label: "Directors", path: "/search/directors" },
+    // { label: "Genres", path: "/search/genres" },
 ]
 
 

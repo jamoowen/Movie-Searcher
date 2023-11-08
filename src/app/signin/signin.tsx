@@ -1,7 +1,7 @@
 "use client"
 import { Session, createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useState } from "react";
-import { validateEmail, validatePassword, confirmPassword } from "../helpers";
+import { validateEmail, validatePassword, confirmPassword } from "../components/helpers";
 import { useRouter } from 'next/navigation'
 // import { redirect } from 'next/navigation'
 
@@ -30,7 +30,7 @@ const Signin = () => {
         return
     }
 
-    const handleSignin = async (event) => {
+    const handleSignin = async (event: any) => {
         setLoading(true)
         event.preventDefault();
         const email = event.target.elements.email.value;
@@ -51,7 +51,7 @@ const Signin = () => {
         }
     }
 
-    const handlePasswordReset = async (e) => {
+    const handlePasswordReset = async (e: any) => {
         setLoading(true)
         e.preventDefault();
         const resetEmail = e.target.elements.resetEmail.value;

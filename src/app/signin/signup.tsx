@@ -1,7 +1,7 @@
 "use client"
 import { Session, createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useState } from "react";
-import { validateEmail, validatePassword, confirmPassword } from "../helpers";
+import { validateEmail, validatePassword, confirmPassword } from "../components/helpers";
 import { useRouter } from 'next/navigation'
 
 // import Signup from "../components/signup/Signup";
@@ -32,7 +32,7 @@ const Signup = () => {
 
 
     // submit sign UP form 
-    const handleSignup = async (event) => {
+    const handleSignup = async (event: any) => {
         event.preventDefault();
         setSignupDisabled(true)
         const email = event.target.elements.email.value;

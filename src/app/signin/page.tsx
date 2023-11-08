@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from "react"
-import Signin from "../components/signup/signin"
-import Signup from "../components/signup/signup"
+// import Signin from "../components/signup/signin"
+import Signin from "./signin"
+import Signup from "./signup"
 import { useRouter } from "next/navigation"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
