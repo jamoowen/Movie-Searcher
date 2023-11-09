@@ -105,18 +105,7 @@ const MovieTable = ({ session }: { session: Session | null }) => {
             [col]: 'orange-500'
         }));
 
-        // setButtonActivated({'primaryTitle': 'slate-200', 'cast': 'slate-200', 'director': 'slate-200'})
-        // setButtonActivated(prevState => ({
-        //     ...{ 'primaryTitle': 'slate-200', 'cast': 'slate-200', 'director': 'slate-200' },
-        //     [col]: 'yellow-200'
-        // }));
-
-
     }
-
-    const [test, setTest] = useState('yellow-500')
-
-
 
 
     return (
@@ -136,9 +125,9 @@ const MovieTable = ({ session }: { session: Session | null }) => {
 
                     <div className='flex flex-row items-center mb-2 gap-3'>
                         <form onSubmit={handleSearch}>
-                            <div className='w-64 mr-2'>{`${searchObject[searchCategory]}`}</div>
+                            <div className='w-56 mr-2'>{`${searchObject[searchCategory]}`}</div>
                             <input name='inputCol' type="hidden" value='primaryTitle' />
-                            <input name='inputText' type="text" className="w-64 text-sm font-sans font-normal leading-5 px-3 py-2 rounded-lg shadow-md shadow-slate-100 dark:shadow-slate-900 focus:shadow-lg border border-solid border-slate-300 hover:border-teal-500 " />
+                            <input name='inputText' type="text" className="w-56 mr-2 text-sm font-sans font-normal leading-5 px-3 py-2 rounded-lg shadow-md shadow-slate-100 dark:shadow-slate-900 focus:shadow-lg border border-solid border-slate-300 hover:border-teal-500 " />
                             {loading ? <div className='ml-2 animate-spin'><AiOutlineLoading3Quarters /></div>
                                 : <button type='submit' className=" w-24 text-sm font-sans bg-teal-500 bg-opacity-20 hover:bg-opacity-100 font-normal leading-5 px-3 py-2 rounded-lg shadow-md shadow-slate-100 dark:shadow-slate-900 focus:shadow-lg border border-solid border-slate-300 hover:border-black "> Search</button>
                             }

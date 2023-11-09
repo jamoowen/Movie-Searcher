@@ -2,6 +2,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
+import Footer from "./components/footer";
 
 export default async function Index() {
   const cookieStore = cookies()
@@ -11,7 +12,7 @@ export default async function Index() {
   if (user) {
 
   } else {
-    console.log('error getting session', user)
+    // console.log('error getting session', user)
   }
 
 
@@ -41,13 +42,15 @@ export default async function Index() {
           </div>
 
           <div>
-            <Link href="/signin" className="text-purple-700 cursor-pointer underline">
+            <Link href="/signin?state=up" className="text-purple-700 cursor-pointer underline">
               Sign up
             </Link>
             - That way you can add your favorite movies to your watchlist!
           </div>
         </div>
       </div>
+      <Footer />
+
     </div>
 
   );
