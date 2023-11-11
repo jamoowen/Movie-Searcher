@@ -51,14 +51,17 @@ const MovieTable = ({ session }: { session: Session | null }) => {
     const [searchParams, setSearchParams] = useState<string | null>(null);
     const [searchColumn, setSearchColumn] = useState<string | null>('primaryTitle');
     const [searchCategory, setSearchCategory] = useState<string>('primaryTitle');
+    const [searchCount, setSearchCount] = useState(0)
     const [loading, setLoading] = useState(false);
 
 
     const handleSearch = (event: any) => {
+        setLoading(true)
         event.preventDefault();
         var text = event.target.elements.inputText.value;
         setSearchParams(text);
         console.log(`searching: ${text}`)
+        setSearchCount(searchCount+1);
 
     }
 
@@ -85,6 +88,7 @@ const MovieTable = ({ session }: { session: Session | null }) => {
                 alert('error fetching movie data')
             }
             finally {
+                console.log('finally')
                 setLoading(false);
             }
 
@@ -93,7 +97,7 @@ const MovieTable = ({ session }: { session: Session | null }) => {
         })
 
             ();
-    }, [searchParams])
+    }, [searchParams, searchCount])
 
     const [buttonActivated, setButtonActivated] = useState({ 'primaryTitle': 'orange-500', 'cast': 'slate-200', 'director': 'slate-200' })
 
@@ -128,7 +132,7 @@ const MovieTable = ({ session }: { session: Session | null }) => {
                             <div className='w-56 mr-2'>{`${searchObject[searchCategory]}`}</div>
                             <input name='inputCol' type="hidden" value='primaryTitle' />
                             <input name='inputText' type="text" className="w-56 mr-2 text-sm font-sans font-normal leading-5 px-3 py-2 rounded-lg shadow-md shadow-slate-100 dark:shadow-slate-900 focus:shadow-lg border border-solid border-slate-300 hover:border-teal-500 " />
-                            {loading ? <div className='ml-2 animate-spin'><AiOutlineLoading3Quarters /></div>
+                            {loading ?<button disabled className="animate-spin text-md font-sans "> <AiOutlineLoading3Quarters /></button>
                                 : <button type='submit' className=" w-24 text-sm font-sans bg-teal-500 bg-opacity-20 hover:bg-opacity-100 font-normal leading-5 px-3 py-2 rounded-lg shadow-md shadow-slate-100 dark:shadow-slate-900 focus:shadow-lg border border-solid border-slate-300 hover:border-black "> Search</button>
                             }
 
