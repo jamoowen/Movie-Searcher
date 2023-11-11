@@ -26,12 +26,12 @@ const ChangeNameButton = ({ session }: { session: Session | null }) => {
         try {
             setLoading(true)
             const newName = event.target.elements.newName.value;
-            console.log(`New name: ${newName}`)
+
             if (!newName) {
                 alert("You must provide a name to update")
                 return
             }
-            console.log(`user: ${user?.id}, name: ${newName}`)
+         
 
             const { error } = await supabase.from('profiles').upsert({
                 user_id: user?.id as string,

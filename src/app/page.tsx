@@ -29,7 +29,7 @@ export default async function Index() {
           className="animate-spinFinite"
         />
 
-        <div className="text-lg flex flex-col border-teal-500 border-4 bg-slate-200 px-2 py-10 gap-3 bg-opacity-50 rounded-md mt-2 mb-2">
+        <div className="text-lg flex flex-col border-teal-500 border-4 bg-slate-200 px-2 py-10 gap-8 bg-opacity-50 rounded-md mt-2 mb-2">
           <span className="text-3xl">Welcome!</span> <br />
 
           <div className="italic">Have you ever sat down, the anticipation killing you, finally ready to relax and watch some
@@ -38,7 +38,8 @@ export default async function Index() {
 
           <div>
             Well, if that is you - your&apos;e in luck! <br />
-          Search by ➡️ director, actor, genre, IMDB rating ✅
+            <Link href="/movies"><span className="text-purple-700 cursor-pointer underline">Search</span> by ➡️ director, actor, actor ✅</Link>
+          
           </div>
 
           <div>
