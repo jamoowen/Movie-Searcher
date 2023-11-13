@@ -88,7 +88,7 @@ const MovieTable = ({ session }: { session: Session | null }) => {
                 alert('error fetching movie data')
             }
             finally {
-                console.log('finally')
+                // console.log('finally')
                 setLoading(false);
             }
 
