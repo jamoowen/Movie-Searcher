@@ -48,12 +48,10 @@ export default async function Navbar() {
 
                     <Categories />
 
-                    {(session) ?
-                        <>
-                            <WatchlistButton />
-                            <Account session={session} data={data} />
-                        </>
-                        : <SignInButton />}
+
+                    <WatchlistButton />
+                    <Account session={session} data={data} />
+
 
                 </div>
 

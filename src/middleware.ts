@@ -9,20 +9,21 @@ export async function middleware(req: NextRequest) {
   const supabase = createMiddlewareClient({ req, res })
   const {data: {user}} = await supabase.auth.getUser();
   await supabase.auth.getSession();
-  console.log(`fetched session in middleware`)
+  // console.log(`fetched session in middleware`)
 
   if (user && req.nextUrl.pathname === '/signin') {
     console.log("redirecting...")
     return NextResponse.redirect(new URL('/account', req.url))
   }
-  if (!user && req.nextUrl.pathname === '/account' || !user && req.nextUrl.pathname=='/watchlist') {
-    console.log('shouldnt be on account page');
-    return NextResponse.redirect(new URL('/', req.url))
+  if (!user && req.nextUrl.pathname === '/account' ) {
+    // console.log('shouldnt be on account page');
+    return NextResponse.redirect(new URL('/signin', req.url))
+  } 
+  if (!user && req.nextUrl.pathname=='/watchlist' ) {
+    console.log('shouldnt be on watchlist page');
+    return NextResponse.redirect(new URL('/signin?state=up', req.url))
   } 
 
 
-
-  // console.log(`request: ${req.url}`)
-  // console.log(`response: ${res.url}`)
   return res
 }

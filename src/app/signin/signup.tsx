@@ -84,7 +84,7 @@ const Signup = () => {
 
 
         <>
-            <div className="mb-5 text-xl font-medium text-black">Sign up with email </div>
+            <div className="mb-5 text-3xl font-medium underline text-blue-600">Sign Up </div>
             <form onSubmit={handleSignup} >
                 <label className="block text-black">
                     <span className="block text-sm font-medium text-slate-500">Email</span>

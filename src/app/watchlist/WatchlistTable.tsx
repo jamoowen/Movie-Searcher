@@ -184,7 +184,7 @@ const WatchlistTable = ({ defaultData, session }: {defaultData: Watchlist[], ses
     // if the add button in the popup clicked, this func will insert the user_id value to the row data
     // the data will then be inserted into the users wathlist table
     const handleRemove = async () => {
-        console.log('rowdata: ')
+   
 
         if (user && selectedRow) {
         

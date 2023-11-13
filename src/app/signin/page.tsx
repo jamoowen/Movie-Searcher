@@ -24,7 +24,7 @@ export default function Authenticate() {
     }
 
     const startState = getStartState()
-    console.log('startstate', startState)
+   
 
     const [showSignup, setShowSignup] = useState(startState);
 
@@ -58,8 +58,9 @@ export default function Authenticate() {
             {(showSignup === 'in') ? <Signin />
                 : <Signup />
             }
-
-            <button onClick={handleClick} className=" mt-5 bg-black rounded-md text-white px-2 py-1">{showSignup==='up'? 'Sign In' : 'Sign up'}</button>
+            <span className="text-black mt-5">{showSignup==='up'? 'Have an account? ' : "Haven't signed up yet?"}</span>
+            
+            <button onClick={handleClick} className=" bg-black rounded-md text-white px-2 py-1">{showSignup==='up'? 'Sign In' : 'Sign up'}</button>
             {/* <button onClick={handleSignOut} className="bg-red-500 mt-5 w-full rounded-sm text-black">Sign out</button> */}
 
         </div>

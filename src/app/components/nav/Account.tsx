@@ -42,7 +42,7 @@ const Account: React.FC<AccountProps> = ({ session, data }) => {
     }
 
     const handleSignOut = async () => {
-        console.log("signing out..")
+        // console.log("signing out..")
         await supabase.auth.signOut();
         router.refresh();
         console.log("signed out")
@@ -71,19 +71,34 @@ const Account: React.FC<AccountProps> = ({ session, data }) => {
                         <ClickAwayListener onClickAway={toggleClose}>
                             <div className="fixed flex  ">
                                 <div className="bg-white shadow-md w-[40vw] rounded-md p-4">
-                                    <div className="text-slate-400 font-light italic font-serif opacity-50">
+                                    {data ? <> <div className="text-slate-400 font-light italic font-serif opacity-50">
                                         {data?.name}
                                     </div>
 
-                                    <Link href="/account" >
-                                        <div className="hover:bg-gray-100 rounded-md p-2 cursor-pointer">
-                                            Account
-                                        </div>
-                                    </Link>
+                                        <Link href="/account" >
+                                            <div className="hover:bg-gray-100 rounded-md p-2 cursor-pointer">
+                                                Account
+                                            </div>
+                                        </Link>
 
-                                    <div onClick={handleSignOut} className="hover:bg-gray-100 rounded-md p-2 cursor-pointer">
-                                        Sign Out
-                                    </div>
+                                        <div onClick={handleSignOut} className="hover:bg-gray-100 rounded-md p-2 cursor-pointer">
+                                            Sign Out
+                                        </div>
+                                    </>
+                                        :
+                                        <>
+                                            <Link href="/signin" >
+                                                <div className="hover:bg-gray-100 rounded-md p-2 cursor-pointer">
+                                                    Sign In
+                                                </div>
+                                            </Link>
+                                            <Link href="/signin?state=up" >
+                                                <div className="hover:bg-gray-100 rounded-md p-2 cursor-pointer">
+                                                    Sign Up
+                                                </div>
+                                            </Link>
+                                        </>
+                                    }
                                 </div>
                             </div>
                         </ClickAwayListener>

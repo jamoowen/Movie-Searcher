@@ -68,7 +68,7 @@ const Signin = () => {
 
 
         <>
-            <div className="mb-5 text-xl font-medium text-black">Sign In </div>
+            <div className="mb-5 text-3xl font-medium text-green-600 underline">Sign In </div>
             <form onSubmit={handleSignin} >
                 <label className="block text-black">
                     <span className="block text-sm font-medium text-slate-500">Email</span>
