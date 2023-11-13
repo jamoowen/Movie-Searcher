@@ -14,7 +14,7 @@ export default async function Movies() {
     const { data: { session } } = await supabase.auth.getSession();
     const user = session?.user;
 
-    // console.log('user:', user)
+    console.log('user:', user)
 
     //   const { data, error } = await supabase
     //     .from('watchlist')

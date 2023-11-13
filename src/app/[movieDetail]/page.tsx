@@ -1,10 +1,10 @@
-// import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useParams } from 'next/navigation'
 
 
 export default function Authenticate() {
-    // const router = useRouter();
+    const router = useRouter();
     const supabase = createClientComponentClient();
     const params = useParams();
 
