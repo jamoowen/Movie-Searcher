@@ -1,3 +1,5 @@
+Live website => https://movie-searcher-100.vercel.app/
+
 This is an app made with Nextjs 13, Typescript, Supabase (frontend & backend), Apache Spark, Python (Dataset creation)
 Auth implemented with supabase auth (email/password)
 Tables implemented using Tanstack Table
@@ -7,7 +9,7 @@ Users can add a movie to their watchlist - linked to profile
 
 All components are styled with tailwind (No ui library used )
 
-
+note to self
 ** To create types from supabase db:
     npx supabase login (need an access token)
     npx supabase gen types typescript --project-id <My Reference ID> > lib/database.types.ts
